@@ -1,7 +1,7 @@
 package amazon_alexa_web_services_api_client
 
-func NewUrlInfoRequest(url string, responseGroup string) Request {
-	return Request{
+func NewUrlInfoRequest(url string, responseGroup string) *Request {
+	return &Request{
 		Url:           url,
 		responseGroup: responseGroup,
 		action:        "UrlInfo",
@@ -11,8 +11,8 @@ func NewUrlInfoRequest(url string, responseGroup string) Request {
 	}
 }
 
-func NewTrafficHistoryRequest(url string) Request {
-	return Request{
+func NewTrafficHistoryRequest(url string) *Request {
+	return &Request{
 		Url:           url,
 		responseGroup: "History",
 		action:        "TrafficHistory",
@@ -22,8 +22,8 @@ func NewTrafficHistoryRequest(url string) Request {
 	}
 }
 
-func NewCategoryBrowseRequest(url string, responseGroup string) Request {
-	return Request{
+func NewCategoryBrowseRequest(url string, responseGroup string) *Request {
+	return &Request{
 		Url:           url,
 		responseGroup: responseGroup,
 		action:        "CategoryBrowse",
@@ -33,8 +33,8 @@ func NewCategoryBrowseRequest(url string, responseGroup string) Request {
 	}
 }
 
-func NewSitesLinkingInRequest(url string) Request {
-	return Request{
+func NewSitesLinkingInRequest(url string) *Request {
+	return &Request{
 		Url:           url,
 		responseGroup: "SitesLinkingIn",
 		action:        "SitesLinkingIn",
