@@ -76,17 +76,17 @@ func TestConstructors(t *testing.T) {
 	}
 
 	r = NewCategoryBrowseRequest("google.com", "group")
-	if r.requestType != CategoryBrowse || r.action != "CategoryBrowse"  {
+	if r.requestType != CategoryBrowse || r.action != "CategoryBrowse" {
 		t.Error("wrong request type")
 	}
 
 	r = NewTrafficHistoryRequest("google.com")
-	if r.requestType != TrafficHistory || r.action != "TrafficHistory"  {
+	if r.requestType != TrafficHistory || r.action != "TrafficHistory" {
 		t.Error("wrong request type")
 	}
 
 	r = NewSitesLinkingInRequest("google.com")
-	if r.requestType != SitesLinkingIn || r.action != "SitesLinkingIn"  {
+	if r.requestType != SitesLinkingIn || r.action != "SitesLinkingIn" {
 		t.Error("wrong request type")
 	}
 }
