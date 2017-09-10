@@ -13,7 +13,7 @@ type TrafficHistoryResponse struct {
 							Date  string
 							Rank  int
 							Reach struct {
-								PerMillion int
+								PerMillion float64
 							}
 							PageViews struct {
 								PerMillion float64
