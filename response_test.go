@@ -68,7 +68,7 @@ func TestUnmarshalTrafficHistoryResponse(t *testing.T) {
 		t.Error("HistoricalData.date wasn't gain")
 	}
 
-	if resp.Response.TrafficHistoryResult.Alexa.TrafficHistory.HistoricalData.Data[0].PageViews.PerUser != "5.20" {
+	if resp.Response.TrafficHistoryResult.Alexa.TrafficHistory.HistoricalData.Data[0].PageViews.PerUser != 5.20 {
 		t.Error("PageViews.PerUser wasn't gain")
 	}
 

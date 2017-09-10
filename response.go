@@ -16,8 +16,8 @@ type TrafficHistoryResponse struct {
 								PerMillion int
 							}
 							PageViews struct {
-								PerMillion int
-								PerUser    string
+								PerMillion float64
+								PerUser    float64
 							}
 						}
 					}
