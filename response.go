@@ -1,7 +1,33 @@
 package awis
 
+type OperationRequest struct {
+	RequestId string
+}
+
+type ResponseStatus struct {
+	StatusCode string
+}
+
+type SitesLinkingInResponse struct {
+	Response struct {
+		OperationRequest     OperationRequest
+		SitesLinkingInResult struct {
+			Alexa struct {
+				SitesLinkingIn struct {
+					Site []struct {
+						Title string
+						Url   string
+					}
+				}
+			}
+		}
+		ResponseStatus ResponseStatus
+	}
+}
+
 type TrafficHistoryResponse struct {
 	Response struct {
+		OperationRequest     OperationRequest
 		TrafficHistoryResult struct {
 			Alexa struct {
 				TrafficHistory struct {
@@ -24,8 +50,6 @@ type TrafficHistoryResponse struct {
 				}
 			}
 		}
-		ResponseStatus struct {
-			StatusCode string
-		}
+		ResponseStatus ResponseStatus
 	}
 }

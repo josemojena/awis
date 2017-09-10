@@ -41,6 +41,35 @@ const trafficHistoryRawResponse = `
 </aws:Alexa></aws:TrafficHistoryResult><aws:ResponseStatus xmlns:aws="http://alexa.amazonaws.com/doc/2005-10-05/"><aws:StatusCode>Success</aws:StatusCode></aws:ResponseStatus></aws:Response></aws:TrafficHistoryResponse>
 `
 
+const sitesLinkingInRawResponse = `
+<?xml version="1.0"?>
+<aws:SitesLinkingInResponse xmlns:aws="http://alexa.amazonaws.com/doc/2005-10-05/">
+    <aws:Response xmlns:aws="http://awis.amazonaws.com/doc/2005-07-11">
+        <aws:OperationRequest>
+            <aws:RequestId>ca282ec6-2d08-4341-9f1d-50f8c1e3652b
+            </aws:RequestId>
+        </aws:OperationRequest>
+        <aws:SitesLinkingInResult>
+            <aws:Alexa>
+                <aws:SitesLinkingIn>
+                    <aws:Site>
+                        <aws:Title>Google</aws:Title>
+                        <aws:Url>http://www.google.com:80/Top/Computers/Internet/On_the_Web/Web_Portals/</aws:Url>
+                    </aws:Site>
+                    <aws:Site>
+                        <aws:Title>www.fotolog.com:80/TsR_BkR_TsR</aws:Title>
+                        <aws:Url>http://www.fotolog.com:80/TsR_BkR_TsR</aws:Url>
+                    </aws:Site>
+                </aws:SitesLinkingIn>
+            </aws:Alexa>
+        </aws:SitesLinkingInResult>
+        <aws:ResponseStatus xmlns:aws="http://alexa.amazonaws.com/doc/2005-10-05/">
+            <aws:StatusCode>Success</aws:StatusCode>
+        </aws:ResponseStatus>
+    </aws:Response>
+</aws:SitesLinkingInResponse>
+`
+
 func TestUnmarshalTrafficHistoryResponse(t *testing.T) {
 	resp := TrafficHistoryResponse{}
 	err := xml.Unmarshal([]byte(trafficHistoryRawResponse), &resp)
@@ -78,5 +107,25 @@ func TestUnmarshalTrafficHistoryResponse(t *testing.T) {
 
 	if resp.Response.TrafficHistoryResult.Alexa.TrafficHistory.HistoricalData.Data[0].Rank != 2 {
 		t.Error("Rank wasn't gain")
+	}
+}
+
+func TestUnmarshalSitesLinkingInResponse(t *testing.T) {
+	resp := SitesLinkingInResponse{}
+	err := xml.Unmarshal([]byte(sitesLinkingInRawResponse), &resp)
+	if err != nil {
+		t.Error(err)
+	}
+
+	if resp.Response.ResponseStatus.StatusCode != "Success" {
+		t.Error("response status is not success")
+	}
+
+	if resp.Response.SitesLinkingInResult.Alexa.SitesLinkingIn.Site[0].Url != "http://www.google.com:80/Top/Computers/Internet/On_the_Web/Web_Portals/" {
+		t.Error("URL wasn't gain")
+	}
+
+	if resp.Response.SitesLinkingInResult.Alexa.SitesLinkingIn.Site[1].Title != "www.fotolog.com:80/TsR_BkR_TsR" {
+		t.Error("first site title wasn't gain")
 	}
 }
