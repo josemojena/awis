@@ -1,4 +1,4 @@
-package amazon_alexa_web_services_api_client
+package awis
 
 import (
 	"crypto/hmac"

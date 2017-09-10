@@ -1,4 +1,4 @@
-package amazon_alexa_web_services_api_client
+package awis
 
 func NewUrlInfoRequest(url string, responseGroup string) *Request {
 	return &Request{
