@@ -21,15 +21,14 @@ const (
 	SitesLinkingIn
 )
 
-var (
-	AmazonServiceHost = "awis.amazonaws.com"
-)
-
 type Request struct {
 	// required parameters
 	Url           string
 	responseGroup string
 	action        string
+
+	// amazon service URL used for requests
+	AmazonServiceURL string
 
 	// internal
 	requestType RequestType
@@ -62,7 +61,12 @@ func (r *Request) compileQuery(AWSKey, secretKey string) {
 
 	query := r.buildQueryString(preparedParameters)
 
-	r.compiledQuery = query + "&Signature=" + sign(AmazonServiceHost, secretKey, query)
+	host, err := url.Parse(r.AmazonServiceURL)
+	if err != nil {
+		panic("wrong amazon service url")
+	}
+
+	r.compiledQuery = query + "&Signature=" + sign(host.Host, secretKey, query)
 }
 
 // Builds query from parameters
@@ -88,7 +92,7 @@ func (r *Request) buildQueryString(parameters map[string]string) string {
 func (r *Request) Execute(AWSKey, secretKey string) (res []byte, err error) {
 	r.compileQuery(AWSKey, secretKey)
 
-	requestURL := "https://" + AmazonServiceHost + "/?" + r.compiledQuery
+	requestURL := r.AmazonServiceURL + "/?" + r.compiledQuery
 	req, err := http.NewRequest(http.MethodGet, requestURL, nil)
 	if err != nil {
 		return

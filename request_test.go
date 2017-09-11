@@ -2,23 +2,31 @@ package awis
 
 import (
 	"fmt"
+	"net/http"
+	"net/http/httptest"
 	"strings"
 	"testing"
 )
 
 func TestRequest_Execute(t *testing.T) {
-	t.SkipNow()
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/xml")
+		fmt.Fprintln(w, trafficHistoryRawResponse)
+	}))
+	defer ts.Close()
 
-	r := NewCategoryBrowseRequest("youtube.com", "Categories")
+	r := NewTrafficHistoryRequest("youtube.com")
+	r.AmazonServiceURL = ts.URL
 
 	res, err := r.SetParam("Start", "20170201").
 		Execute("you_aws_key", "your_secret_key")
-
 	if err != nil {
 		t.Error(err)
 	}
 
-	fmt.Print(string(res))
+	if strings.TrimSpace(string(res)) != strings.TrimSpace(string(trafficHistoryRawResponse)) {
+		t.Error("wrong response")
+	}
 }
 
 func TestRequest_compileQuery(t *testing.T) {
@@ -88,5 +96,30 @@ func TestConstructors(t *testing.T) {
 	r = NewSitesLinkingInRequest("google.com")
 	if r.requestType != SitesLinkingIn || r.action != "SitesLinkingIn" {
 		t.Error("wrong request type")
+	}
+}
+
+func TestRequest_constructors(t *testing.T) {
+	site := "gmail.com"
+	respGroup := "cat"
+
+	r := NewTrafficHistoryRequest(site)
+	if r.Url != site || r.responseGroup != "History" {
+		t.Error("wrong url or respGroup")
+	}
+
+	r = NewSitesLinkingInRequest(site)
+	if r.Url != site || r.responseGroup != "SitesLinkingIn" {
+		t.Error("wrong url or respGroup")
+	}
+
+	r = NewUrlInfoRequest(site, respGroup)
+	if r.Url != site || r.responseGroup != respGroup {
+		t.Error("wrong url or respGroup")
+	}
+
+	r = NewCategoryBrowseRequest(site, respGroup)
+	if r.Url != site || r.responseGroup != respGroup {
+		t.Error("wrong url or respGroup")
 	}
 }
